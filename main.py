@@ -9,9 +9,10 @@
 # =============================================================================
 import numpy as np
 import scipy as sp
+from typing import Tuple,Union 
 
 
-def is_diagonally_dominant(A: np.ndarray | sp.sparse.csc_array) -> bool | None:
+def is_diagonally_dominant(A: Union[Tuple[np.ndarray , sp.sparse.csc_array]]) ->  Union[Tuple[bool , None]]:
     """Funkcja sprawdzająca czy podana macierz jest diagonalnie zdominowana.
 
     Args:
@@ -23,21 +24,24 @@ def is_diagonally_dominant(A: np.ndarray | sp.sparse.csc_array) -> bool | None:
             w przeciwnym wypadku `False`.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+    
+    if abs(A.diagonal())>= np.sum(abs(A), axis=1)-abs(A.diagonal()):
+        return True
+    else:
+        return False
 
-
-def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
-    """Funkcja obliczająca normę residuum dla równania postaci: 
-    Ax = b.
+def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> Union[float,None]:
+    """Funkcja obliczająca normę residuum dla równania postaci:
+    Ax = b
 
     Args:
         A (np.ndarray): Macierz A (m,n) zawierająca współczynniki równania.
         x (np.ndarray): Wektor x (n,) zawierający rozwiązania równania.
-        b (np.ndarray): Wektor b (m,) zawierający współczynniki po prawej 
-            stronie równania.
-    
+        b (np.ndarray): Wektor b (m,) zawierający współczynniki po prawej stronie równania.
+
     Returns:
         (float): Wartość normy residuum dla podanych parametrów.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    pass
+
+    return np.linalg.norm(A @x-b)
