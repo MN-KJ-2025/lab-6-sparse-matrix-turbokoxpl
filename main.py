@@ -24,11 +24,14 @@ def is_diagonally_dominant(A: Union[Tuple[np.ndarray , sp.sparse.csc_array]]) ->
             w przeciwnym wypadku `False`.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    
-    if abs(A.diagonal())>= np.sum(abs(A), axis=1)-abs(A.diagonal()):
-        return True
-    else:
-        return False
+    if isinstance(A, sp.sparse.csc_array):
+        A = A.toarray()
+
+    diagonalne = np.abs(np.diagonal)
+
+    szereg= np.sum(np.abs(A),axis=1) - diagonalne
+
+    return np.all(diagonalne >= szereg)
 
 def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> Union[float,None]:
     """Funkcja obliczająca normę residuum dla równania postaci:
