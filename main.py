@@ -10,9 +10,9 @@
 import numpy as np
 import scipy as sp
 from typing import Tuple,Union 
+from scipy.sparse import csc_array
 
-
-def is_diagonally_dominant(A: Union[Tuple[np.ndarray , sp.sparse.csc_array]]) ->  Union[Tuple[bool , None]]:
+def is_diagonally_dominant(A: Union[np.ndarray, csc_array]) -> bool:
     """Funkcja sprawdzająca czy podana macierz jest diagonalnie zdominowana.
 
     Args:
@@ -24,13 +24,11 @@ def is_diagonally_dominant(A: Union[Tuple[np.ndarray , sp.sparse.csc_array]]) ->
             w przeciwnym wypadku `False`.
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
-    if isinstance(A, sp.sparse.csc_array):
+    if isinstance(A, csc_array):
         A = A.toarray()
 
-    diagonalne = np.abs(np.diagonal)
-
-    szereg= np.sum(np.abs(A),axis=1) - diagonalne
-
+    diagonalne = np.abs(np.diagonal(A))
+    szereg = np.sum(np.abs(A), axis=1) - diagonalne
     return np.all(diagonalne >= szereg)
 
 def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> Union[float,None]:
